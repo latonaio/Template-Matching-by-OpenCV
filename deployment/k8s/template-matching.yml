@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: template-matching
+spec:
+  selector:
+    matchLabels:
+      app: template-matching
+  template:
+    metadata:
+      labels:
+        app: template-matching
+    spec:
+      containers:
+        - name: template-matching
+          imagePullPolicy: IfNotPresent
+          image: latonaio/template-matching-by-opencv:latest
+          command:
+            - /bin/sh
+            - -c
+            - "while :; do sleep 10; done"
+          env:
+            - name: SERVER_HOST
+              value: template-matching-server
+            - name: SERVER_PORT
+              value: "50052"
+            - name: CONNECTION_MODE
+              value: "direct"
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: scripts
+              mountPath: /var/lib/aion/Runtime/template-matching-by-opencv
+      volumes:
+        - name: scripts
+          hostPath:
+            path: /home/latona/workspace/template-matching-by-opencv/client/template_matching

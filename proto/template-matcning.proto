@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.routeguide";
+option java_outer_classname = "RouteGuideProto";
+option objc_class_prefix = "RTG";
+
+package templatematching;
+
+
+service TemplateMatching {
+  rpc set_templates(Set) returns (SetResult) {}
+  rpc get_matching_result(Matching) returns (MatchingResult) {}
+}
+
+message Matching {
+    repeated string picture_file_list = 1;
+}
+
+message MatchingResult {
+    google.protobuf.Struct data_dict = 1;
+}
+
+message Set {
+    google.protobuf.Struct template_data = 1;
+}
+
+message SetResult {
+	bool result = 1;
+}
